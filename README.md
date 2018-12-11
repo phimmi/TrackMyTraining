@@ -1,7 +1,5 @@
 # Projektvorschlag Lorem ipsum 
 
-projektvorschlag_template
-
 **Hochschule Worms CSA 151 WS 2018/19**
 
 Gruppe X  
