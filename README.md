@@ -109,40 +109,76 @@ Animi aspernatur commodi consequatur libero nesciunt nisi, praesentium quidem re
 ## API-Beschreibung
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
 
-### `GET /foo`
-In dieser Route nimmt der Server Lorem entgegen.
+
+### `GET /foo/:id`
+**Get** In dieser Route nimmt der Server Lorem entgegen.
 Als Antwort liefert er ein ipsum dolor sit amet, consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
 
 ### `POST /foo`
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
+**Create** Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
 
-### `PUT /foo`
-Animi aspernatur commodi consequatur libero nesciunt nisi, praesentium quidem repellendus sit sunt. Maiores, officia omnis!
+### `PUT /foo/:id`
+**Update** Animi aspernatur commodi consequatur libero nesciunt nisi, praesentium quidem repellendus sit sunt. Maiores, officia omnis!
 
-### `DELETE /foo`
-Consequuntur incidunt iste neque nihil nulla omnis quam, saepe veritatis. Corporis labore maiores modi.
+### `DELETE /foo:id`
+**Delete** Consequuntur incidunt iste neque nihil nulla omnis quam, saepe veritatis. Corporis labore maiores modi.
+
+### `GET /foo` | `GET /foos`
+**Get "list"**  
+Aamet, consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
+
+### `GET /foo/:id/bar/:id`
+**Get** 
+Consectetur adipisicing elit. Ad consequuntur, doloribus hic impedit quaerat quam quas qui voluptas voluptatibus! Eius facere harum nisi repellendus vel.
+
 
 ### Template Object
 
 Animi aspernatur commodi consequatur libero nesciunt nisi, praesentium quidem repellendus sit sunt. Maiores, officia omnis!
 
+#### Error
 
 ```javascript
 {
-  success: false,
-  msg: "...."
+  success: Boolean,
+  msg: String
 }
 ```
 
 Cumque delectus laboriosam magnam maxime nam porro possimus quos recusandae!
 
+#### Get ..
+
 ```javascript
 {
-  success: true,
-  foo: "$bar"
+  success: Boolean,
+  msg: String,
+  data: {
+    id: Number
+    name: String 
+  }
 }
 ```
 
+#### Gets ...
+
+```javascript
+{
+  success: Boolean,
+  msg: String,
+  data: [
+    {
+        id: Number
+        name: String 
+    },
+    {
+      id: Number
+      name: String 
+    },
+    ...
+  ]
+}
+```
 ## Aufwandsschätzungen
 
 ### Frontend
