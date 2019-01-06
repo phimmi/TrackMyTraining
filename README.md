@@ -2,20 +2,50 @@
 
 **Hochschule Worms CSA 151 WS 2018/19** 
 
-Philipp Schmitt  
+Philipp Schmitt
+
 Philipp.Schmitt@hs-worms.de
+
 
 ---
 
 ## Abstract
+Entwicklung einer Plattform zur persönlichen Trainingsentwicklung
 
+###Motivation
+Ich trainiere regelmäßig in einem Sportstudio und verfolge meinen persönlichen Trainingsfortschritt bisher - wie üblich - auf Papier in tabellarischer Form.
+Leider bin ich was diesen Plan angeht nicht sonderlich sorgfältig und er wird oft in meiner Sporttasche zerknüllt, zerrissen und umgeknickt, weshalb ich regelmäßig eine neue Tabelle ausdrucken muss.
+Damit meine Ergebnisse über längeren Zeitraum nachverfolgbar sind, muss ich daraufhin die vorherigen Ergebnisse immer wieder übertragen.
+Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsprechende Client-Server-Anwendung entwickele, die es mir ermöglicht ein Training aus einer Liste an Übungen zusammenzustellen und das Ergebnis für jede Übung für jede Trainingseinheit abzuspeichern.
 
+###Anforderungsanalyse
 
-## Wireframe
+1. Funktionale Anforderungen
+    - Übung hinzufügen.
+    - Übung bearbeiten.
+    - Übung löschen.
+    - Training erstellen.
+    - Übung zum Training hinzufügen.
+    - Ergebnis zu einer Übung hinzufügen.
+    - Ergebnis zu einer Übung bearbeiten.
+    - Ergebnis zu einer Übung löschen.
+    - Übung aus einem Training entfernen.
+    - Training bearbeiten.
+    
+2. Nicht-Funktionale Anforderungen
+    - Die Daten sollen persistent in einer Datenbank gespeichert werden.
+    - Die Anwendung soll schnell sein.
+    - Die Anwendung soll hübscher sein als die tabellarische Darstellung auf Papier.
+    - Die Anwendung soll selbsterklärend sein.
+ 
+## Client
+Ich möchte das Projekt hübsch gestalten und mich mit neusten Gestaltungsmöglichkeiten und Komponenten auseinander setzen.
 
+https://material.io/develop/web/ bietet umfangreiche Komponenten für die Gestaltung moderner Nutzeroberflächen.
+
+Ich möchte die Übungen mittels "Cards" sowie Einstellungsmöglichkeiten mittels "Chips" umsetzen und den "FloatingActionButton" nutzen um Dialoge zu triggern zum Erstellen und Bearbeiten von Übungen und Trainings.
 
 ## Mobil
-
 
 ## Desktop
 
@@ -28,8 +58,6 @@ Philipp.Schmitt@hs-worms.de
 ### Exercises
 
 ### Registration / Login
-
-
 
 ## Server
 
@@ -55,6 +83,7 @@ Liefert den Nutzer mit der id zurück
 
 
 #### Error
+
 
 ```javascript
 {
