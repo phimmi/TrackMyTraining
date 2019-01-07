@@ -51,10 +51,6 @@ Ich möchte die Übungen mittels "Cards" sowie Einstellungsmöglichkeiten mittel
 
 ### Dashboard
 
-
-### Training
-
-
 ### Exercises
 
 ### Registration / Login
