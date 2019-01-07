@@ -97,74 +97,146 @@ Hierfür möchte ich Icons aus der Font-Awesome-Familie nutzen:
 
 ## Server
 
+Der Server stellt eine REST-API bereit, um die Daten innerhalb einer Datenbank zu manipulieren.
+Es ist wichtig, dass dies nicht ohne Authentification geschieht.
+
+
 
 ## ORM
 
 
 ## API-Beschreibung
 
+### `GET /users/:id`
+**Get**
+liefert Nutzerobjekt anhand der Route zurück
+- **RESULT** `{id: long, name: String, email: String, password: String`
 
-### `GET /user/:id`
-**Get** 
-Liefert den Nutzer mit der id zurück
+### `POST /users`
+**Create** 
+Erstellt einen neuen Nutzer
+Route nimmt Nutzerdaten entgegen und liefert Nutzerobjekt mit id zurück
+- **INPUT**  `{name: String, email: String, password: String}`
+- **RESULT** `{id: long, name: String, email: String, password: String`
 
-### `POST /user`
-**Create** Erstellt einen neuen Nutzer und liefert als Antwort ein Nutzerobjekt mit id zurück.
+### `PUT /users/:id`
+**Update**
+Aktualisiert den Nutzer anhand der Route
+Route nimmt aktualisiertes Nutzerobjekt entgegen und liefert aktualisiertes Nutzerobjekt zurück
+- **INPUT**  `{id: long, name_new: String, email_new: String, password_new: String}`
+- **RESULT** `{id: long, name_new: String, email_new: String, password_new: String`
 
-### `PUT /user/:id`
-**Update** aktualisiert den Nutzer mit id
+### `DELETE /users/:id`
+**Delete** 
+Löscht den Nutzer anhand der Route sowie alle mit ihm verknüpften Datensätze
 
-### `DELETE /user:id`
-**Delete** löscht den Nutzer mit der id und alle damit verknüpften weiteren Datenbankeinträge
+### `GET /übungen`
+**Get List**
+liefert Liste aller Übungen zurück
+- **RESULT** `{id: long, name: String, beschreibung: String},{id: long, name: String, beschreibung: String}, ...`
 
+### `GET /übungen/:id`
+**Get**
+liefert Übungsobjekt anhand der Route zurück
+- **RESULT** `{id: long, name: String, beschreibung: String}`
 
-#### Error
+### `POST /übungen`
+**Create** 
+Erstellt eine neue Übung.
+Route nimmt Übungsdaten entgegen und liefert Übungsobjekt mit id zurück
+- **INPUT**  `{name: String, beschreibung: String}`
+- **RESULT** `{id: long, name: String, beschreibung: String`
 
+### `DELETE /übungen/:id`
+**Delete**
+Löscht die Übung anhand der Route
 
+### `GET /training`
+**Get List**
+liefert Liste aller Trainings zurück
+
+### `POST /training`
+**Create**
+Erstellt ein neues Training
+liefert Trainingsobjekt zurück
+- **INPUT**  `{[{übung_id: long, ergebnis: String},{übung_id: long, ergebnis: String},...]}`
+- **RESULT** `{training_id: long, übungen: [{übung_id: long, ergebnis: String},{übung_id : long, ergebnis: String},...]`
+
+### `PUT /training/:id`
+**Update**
+aktualisiert ein Training anhand der Route
+Route nimmt aktualisierte Trainingsdaten entgegen und liefert aktualisiertes Trainingsobjekt zurück
+- **INPUT** `{training_id: long, übungen: [{übung_id_new: long, ergebnis_new: String},{übung_id_old : long, ergebnis_new: String},...]}`
+- **RESULT** `{training_id: long, übungen: [{übung_id_new: long, ergebnis_new: String},{übung_id_old : long, ergebnis_new: String},...]}`
+
+### `GET /übungen?user_id=x`
+**Get List**
+liefert Liste an Übungen, die vom Nutzer mit der id x erstellt wurden
+
+### `GET /training?user_id=x`
+**Get List**
+liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
+
+## Data Template Objects
+
+### Allgemein
+```javascript
+{
+  success: Boolean,
+  msg: String,
+  data: JSON
+}
+```
+
+### Error
 ```javascript
 {
   success: Boolean,
   msg: String
+  data: []
 }
 ```
 
-#### Get ..
-
+### User
 ```javascript
 {
-  success: Boolean,
-  msg: String,
-  data: {
-    id: Number
-    name: String 
-  }
+    id: long,
+    name: String,
+    email: String,
+    password: String
 }
 ```
 
-#### Gets ...
-
+### Übung
 ```javascript
 {
-  success: Boolean,
-  msg: String,
-  data: [
-    {
-        id: Number
-        name: String 
-    },
-    {
-      id: Number
-      name: String 
-    },
-    ...
-  ]
+    id: long,
+    name: String,
+    beschreibung: String
 }
 ```
+
+### Training
+```javascript
+{
+    id: long,
+    übungen: {
+        {
+            übung_id: long,
+            ergebnis: String
+        },
+        {
+            übung_id: long,
+            ergebnis: String
+        },
+        ...
+    }
+}
+```
+
 ## Aufwandsschätzungen
 
-### Client
-
-#### Projektvorbereitung 
+### Projektvorbereitung 
 
 
 | Aufgabe                                  | Zeit in Std |
@@ -177,13 +249,13 @@ Liefert den Nutzer mit der id zurück
 | Beschreibung Funktionen Lorem2           |            |
 | Wireframe Lorem3                         |            |
 | Beschreibung Funktionen Lorem4           |            |
-| Backend Endpunkte / API - Beschreibung   |            |
+| Backend Endpunkte / API - Beschreibung / Daten   | 4          |
 | ORM                                      |            |
 | Verfassen des Projektvorschlags          |            |
 | ...                                      |  ...        |
 | **Summe**                                |  **...**    |
 
-
+### Client
 #### Implementierung
 
 | Aufgabe                                  | Zeit in Std |
