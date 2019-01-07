@@ -12,13 +12,13 @@ Philipp.Schmitt@hs-worms.de
 ## Abstract
 Entwicklung einer Plattform zur persönlichen Trainingsentwicklung
 
-###Motivation
+### Motivation
 Ich trainiere regelmäßig in einem Sportstudio und verfolge meinen persönlichen Trainingsfortschritt bisher - wie üblich - auf Papier in tabellarischer Form.
 Leider bin ich was diesen Plan angeht nicht sonderlich sorgfältig und er wird oft in meiner Sporttasche zerknüllt, zerrissen und umgeknickt, weshalb ich regelmäßig eine neue Tabelle ausdrucken muss.
 Damit meine Ergebnisse über längeren Zeitraum nachverfolgbar sind, muss ich daraufhin die vorherigen Ergebnisse immer wieder übertragen.
 Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsprechende Client-Server-Anwendung entwickele, die es mir ermöglicht ein Training aus einer Liste an Übungen zusammenzustellen und das Ergebnis für jede Übung für jede Trainingseinheit abzuspeichern.
 
-###Anforderungsanalyse
+### Anforderungsanalyse
 
 1. Funktionale Anforderungen
     - Übung hinzufügen.
@@ -31,19 +31,59 @@ Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsp
     - Ergebnis zu einer Übung löschen.
     - Übung aus einem Training entfernen.
     - Training bearbeiten.
+    - Training löschen.
     
 2. Nicht-Funktionale Anforderungen
     - Die Daten sollen persistent in einer Datenbank gespeichert werden.
     - Die Anwendung soll schnell sein.
-    - Die Anwendung soll hübscher sein als die tabellarische Darstellung auf Papier.
+    - Die Anwendung soll hübscher und übersichtlicher sein als die tabellarische Darstellung auf Papier.
     - Die Anwendung soll selbsterklärend sein.
  
 ## Client
-Ich möchte das Projekt hübsch gestalten und mich mit neusten Gestaltungsmöglichkeiten und Komponenten auseinander setzen.
 
-https://material.io/develop/web/ bietet umfangreiche Komponenten für die Gestaltung moderner Nutzeroberflächen.
+Die Anwendung besteht aus zwei essentiellen Teilen:
+1. Übungsverwaltung
+2. Trainingsverwaltung
 
-Ich möchte die Übungen mittels "Cards" sowie Einstellungsmöglichkeiten mittels "Chips" umsetzen und den "FloatingActionButton" nutzen um Dialoge zu triggern zum Erstellen und Bearbeiten von Übungen und Trainings.
+### Übungsverwaltung
+Die Übungsverwaltung ist die Übersichtseite der Übungen. Übungen stellen den Hauptteil der Anwendung dar.
+Eine Übungsinstanz kann wie folgt aussehen:
+```javascript
+{
+  id: long,
+  name: String,
+  beschreibung: String
+}
+```
+Optional soll zu einer Übung zusätzlich ein Bild abgespeichert werden können.
+
+Die Übersichtsseite stellt eine Liste aller vom Nutzer hinzugefügten Übungen dar. Ein Button in der rechten unteren Ecke soll zum Hinzufügen von Übungen dienen.
+
+### Trainingsverwaltung
+
+Die Trainingsverwaltung ist die Übersichtseite der abgeschlossenen Trainings. Hier können alte Trainingseinheiten nachgesehen werden.
+Dies erfolgt - wie die Übungsverwaltung - in Listenform.
+Ein großer "Training starten"-Button startet ein neues Training.
+Einem Training kann nun nach und nach eine Übung aus einer Dropdownliste seiner bereits erstellten Übungen inklusive entsprechendem Trainingsergebnisse hinzugefügt werden.
+Das Training kann nach mindestens einem Trainingssatz einer einzelnen Übung mit dem Drücken eines "Training beenden" beendet werden und wird daraufhin abgespeichert.
+
+Ein Training besteht also aus einer Liste an Übungen mitsamt Ihren Ergebnissen. Ergebnisse sollen als Text eingegeben werden.
+
+## Design
+Ich möchte das Projekt hübsch gestalten und mich mit den neuesten Gestaltungsmöglichkeiten und Komponenten der Webentwicklung auseinander setzen.
+
+https://material.io/develop/web/ bietet umfangreiche Komponenten für die Gestaltung moderner Nutzeroberflächen. Diese Plattform möchte ich nutzen, um moderne Webentwicklungskomponenten in mein Projekt einfließen zu lassen.
+
+Eine Übung kann sehr schön mit sogenannten "Cards" dargestellt werden.
+![Material.io Webdesign Components Cards](https://material.io/components/images/mdc_web_screenshots/cards.png)
+
+Cards können in einem Grid gut angeordnet werden und eignen sich damit hervorragend zur Darstellung der Übungsverwaltung.
+
+Des Weiteren soll ein "FloatingActionButton" das zentrale funktionale Element der Anwendung sein. Er soll in der Übungsverwaltung dazu dienen eine Übung hinzuzufügen, während er in der Trainingsverwaltung dazu dienen soll ein neues Training zu starten.
+Hierfür möchte ich Icons aus der Font-Awesome-Familie nutzen:
+
+- [Font Awesome Icon Plus](https://fontawesome.com/icons/plus-circle?style=solid)
+- [Font Awesome Icon Play](https://fontawesome.com/icons/play-circle?style=solid)
 
 ## Mobil
 
@@ -129,13 +169,16 @@ Liefert den Nutzer mit der id zurück
 
 | Aufgabe                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| Wireframe Mobil Lorem                    |            |
-| Wireframe Desktop Lorem                  |            |
-| Beschreibung Funktionen Lorem            |            |
-| Wireframe Lorem2                         |            |
+| Einrichtung von Git und GitHub in WebStorm | 1 |
+| Motivation                   |       0,5     |
+| Anforderungsanalyse               |   0,5         |
+| Client            |    0,5        |
+| Design inklusive Recherche auf Material.io                     |    1        |
 | Beschreibung Funktionen Lorem2           |            |
 | Wireframe Lorem3                         |            |
 | Beschreibung Funktionen Lorem4           |            |
+| Backend Endpunkte / API - Beschreibung   |            |
+| ORM                                      |            |
 | Verfassen des Projektvorschlags          |            |
 | ...                                      |  ...        |
 | **Summe**                                |  **...**    |
@@ -171,26 +214,12 @@ Liefert den Nutzer mit der id zurück
 #### Zusammenfassung
 | Teil                                     | Zeit in Std |
 |------------------------------------------|------------:|
-| Projektvorbereitung                      |  15        |
+| Projektvorbereitung                      |  20        |
 | Implementierung                          |  ...        |
 | Dokumentation / Tests                    |  ...        |
 | **Summe**                                |  75        |
 
 ### Backend
-
-Verantwortlicher: Johannes Meier
-
-#### Projektvorbereitung
-
-| Aufgabe                                  | Zeit in Std |
-|------------------------------------------|------------:|
-| Backend Endpunkte / API - Beschreibung   |            |
-| ORM                                      |            |
-| Verfassen des Projektvorschlags          |            |
-| Verfassen ...                            |            |
-| Markdown                                 |            |
-| ...                                      |  ...        |
-| **Summe**                                |  **...**    |
 
 #### Implementierung und Validierung
 
@@ -211,7 +240,7 @@ Verantwortlicher: Johannes Meier
 | Implementierung Validierung Route 1      |          |
 | Implementierung Validierung Route 2      |          |
 | ...                                      |  ...        |
-| **Summe**                                |  **...**    |
+| **Summe**                                |  **30**    |
 
 #### Dokumentation / Tests
 
@@ -232,7 +261,7 @@ Verantwortlicher: Johannes Meier
 | Dokumentation Lorem4-Route               |          |
 | ...                                      |  ...        |
 | Vergleich SOLL / IST Stunden             |            |
-| **Summe**                                |  **...**    |
+| **Summe**                                |  **10**    |
 
 
 #### Zusammenfassung
@@ -241,4 +270,4 @@ Verantwortlicher: Johannes Meier
 | Projektvorbereitung                      |  ...        |
 | Implementierung                          |  ...        |
 | Dokumentation / Tests                    |  ...        |
-| **Summe**                                |  40        |
+| **Summe**                                |  115        |
