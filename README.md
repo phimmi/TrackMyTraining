@@ -87,6 +87,7 @@ Hierfür möchte ich Icons aus der Font-Awesome-Familie nutzen:
 
 ## Mobil
 Die mobile Version startet mit dem Login-Bildschirm.
+
 ![TrackMyTraining Mobile Login](./wireframes/mobile/TrackMyTraining%20Login.PNG)
 
 Nach dem erfolgreichen Login gelangt man auf die Trainings-Übersichtsseite. Es werden die absolvierten Trainings dort angezeigt.
@@ -95,27 +96,32 @@ Nach dem erfolgreichen Login gelangt man auf die Trainings-Übersichtsseite. Es 
 
 Beim Klicken in der Navigation auf Übungen gelangt man in die Übungsübersicht. Hier werden alle Übungen in einem zweispaltigen Grid untereinander angezeigt.
 Ein großer FloatingActionButton in der Mitte am unteren Ende des Screens dient zum Hinzufügen einer neuen Übung.
+
 ![TrackMyTraining Mobile Übung](./wireframes/mobile/TrackMyTraining%20Übungen.PNG)
+
 Nach Klick auf den FloatingActionButton gelangt man auf diesen Übung-Hinzufügen-Screen.
+
 ![TrackMyTraining Mobile Übung Hinzufügen](./wireframes/mobile/TrackMyTraining%20Neue%20Übung.PNG)
 
 Hat man alle erwünschten Übungen in seinem Konto hinterlegt, so kann man nun ein Training starten.
 Dazu klickt man auf dem Training-Bildschirm auf den großen FloatingActionButton mit dem "Start/Play"-Symbol und gelangt zum folgenden Screen:
+
 ![TrackMyTraining Mobile Training Hinzufügen Default](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Default.PNG)
 
 Man fügt nach und nach die erwünschten Übungen mitsamt Ergebnis hinzu.
 Wenn man fertig mit dem Training ist, beendet man das Training durch Drücken des großen roten "Stop"-Buttons.
+
 ![TrackMyTraining Mobile Training Hinzufügen Gefüllte Liste](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Liste.PNG)
 
 Daraufhin gelangt man wieder zum Trainings-Ausgangs-Bildschirm und das abgeschlossene Training wurde eingefügt.
 
 ## Desktop
 
-### Dashboard
+### Login
 
-### Exercises
+### Training
 
-### Registration / Login
+### Übungen
 
 ## Server
 
@@ -130,7 +136,7 @@ Zur Authentifizerung möchte ich [Passport.js](http://www.passportjs.org/) mit l
 Ich verzichte vorerst auf Salting und Hashing.
 
 ## ORM
-![TrackMyTraining UML Diagramm](./orm/TrackMyTraining%20UML.png)
+![TrackMyTraining UML Diagramm](./orm/TrackMyTraining%20UML.PNG)
 
 
 ## API-Beschreibung
