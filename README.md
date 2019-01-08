@@ -86,6 +86,28 @@ Hierfür möchte ich Icons aus der Font-Awesome-Familie nutzen:
 - [Font Awesome Icon Play](https://fontawesome.com/icons/play-circle?style=solid)
 
 ## Mobil
+Die mobile Version startet mit dem Login-Bildschirm.
+![TrackMyTraining Mobile Login](./wireframes/mobile/TrackMyTraining%20Login.PNG)
+
+Nach dem erfolgreichen Login gelangt man auf die Trainings-Übersichtsseite. Es werden die absolvierten Trainings dort angezeigt.
+
+![TrackMyTraining Mobile Training](./wireframes/mobile/TrackMyTraining%20Training.PNG)
+
+Beim Klicken in der Navigation auf Übungen gelangt man in die Übungsübersicht. Hier werden alle Übungen in einem zweispaltigen Grid untereinander angezeigt.
+Ein großer FloatingActionButton in der Mitte am unteren Ende des Screens dient zum Hinzufügen einer neuen Übung.
+![TrackMyTraining Mobile Übung](./wireframes/mobile/TrackMyTraining%20Übungen.PNG)
+Nach Klick auf den FloatingActionButton gelangt man auf diesen Übung-Hinzufügen-Screen.
+![TrackMyTraining Mobile Übung Hinzufügen](./wireframes/mobile/TrackMyTraining%20Neue%20Übung.PNG)
+
+Hat man alle erwünschten Übungen in seinem Konto hinterlegt, so kann man nun ein Training starten.
+Dazu klickt man auf dem Training-Bildschirm auf den großen FloatingActionButton mit dem "Start/Play"-Symbol und gelangt zum folgenden Screen:
+![TrackMyTraining Mobile Training Hinzufügen Default](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Default.PNG)
+
+Man fügt nach und nach die erwünschten Übungen mitsamt Ergebnis hinzu.
+Wenn man fertig mit dem Training ist, beendet man das Training durch Drücken des großen roten "Stop"-Buttons.
+![TrackMyTraining Mobile Training Hinzufügen Gefüllte Liste](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Liste.PNG)
+
+Daraufhin gelangt man wieder zum Trainings-Ausgangs-Bildschirm und das abgeschlossene Training wurde eingefügt.
 
 ## Desktop
 
@@ -97,12 +119,18 @@ Hierfür möchte ich Icons aus der Font-Awesome-Familie nutzen:
 
 ## Server
 
-Der Server stellt eine REST-API bereit, um die Daten innerhalb einer Datenbank zu manipulieren.
-Es ist wichtig, dass dies nicht ohne Authentification geschieht.
+Der Server stellt eine REST-API bereit, um die Daten innerhalb einer Datenbank zu erstellen, zu bearbeiten und zu lesen.
+Hierzu definiere ich mir nach dem REST-API-Prinzip verschiedene Routen, welche die unterschiedlichen Daten liefern.
+Die Daten bauen grundsätzlich aufeinander auf:
 
+Nutzer und Übungen stellen den Grundbaustein der Anwendung dar und sind miteinander verknüpft.
+Ein Training enthält eine Liste von Übungen, jeweils verknüpft mit einem Ergebnis.
 
+Zur Authentifizerung möchte ich [Passport.js](http://www.passportjs.org/) mit lokaler Strategy nutzen, d.h. eine Anmeldung findet mittels Nutzername und Passwort statt.
+Ich verzichte vorerst auf Salting und Hashing.
 
 ## ORM
+![TrackMyTraining UML Diagramm](./orm/TrackMyTraining%20UML.png)
 
 
 ## API-Beschreibung
@@ -236,7 +264,7 @@ liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
 
 ## Aufwandsschätzungen
 
-### Projektvorbereitung 
+### Projektvorbereitung & Projektvorschlag
 
 
 | Aufgabe                                  | Zeit in Std |
@@ -246,14 +274,12 @@ liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
 | Anforderungsanalyse               |   0,5         |
 | Client            |    0,5        |
 | Design inklusive Recherche auf Material.io                     |    1        |
-| Beschreibung Funktionen Lorem2           |            |
-| Wireframe Lorem3                         |            |
-| Beschreibung Funktionen Lorem4           |            |
+| WireFrames Mobile erstellt und WorkFlow / Funktionen beschrieben         |     5       |
+| Wireframes Desktop erstellt und WorkFlow / Funktionen beschrieben                       |            |
 | Backend Endpunkte / API - Beschreibung / Daten   | 4          |
-| ORM                                      |            |
+| ORM                                      |     1       |
 | Verfassen des Projektvorschlags          |            |
-| ...                                      |  ...        |
-| **Summe**                                |  **...**    |
+| **Summe**                                |  **13,5**    |
 
 ### Client
 #### Implementierung
