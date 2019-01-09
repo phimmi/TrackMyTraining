@@ -21,6 +21,8 @@ Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsp
 ### Anforderungsanalyse
 
 1. Funktionale Anforderungen
+    - User registrieren
+    - User Einloggen
     - Übung hinzufügen.
     - Übung bearbeiten.
     - Übung löschen.
@@ -90,17 +92,17 @@ Ein großer FloatingActionButton in der Mitte am unteren Ende des Screens dient 
 
 ![TrackMyTraining Mobile Übung](./wireframes/mobile/TrackMyTraining%20Übungen.PNG)
 
-Nach einem Klick auf den FloatingActionButton gelangt man auf diesen Übung-Hinzufügen-Screen.
+Nach einem Klick auf den FloatingActionButton gelangt man auf diesen Übung-Hinzufügen-Screen. Der Übung-Hinzufügen-Screen soll auch zum Bearbeiten von bereits existierenden Übungen genutzt werden und öffnet sich dann mit den entsprechenden Daten.
 
 ![TrackMyTraining Mobile Übung Hinzufügen](./wireframes/mobile/TrackMyTraining%20Neue%20Übung.PNG)
 
 Hat man alle erwünschten Übungen erstellt, so kann man nun ein Training starten.
-Dazu klickt man auf dem Training-Bildschirm auf den großen FloatingActionButton mit dem "Start/Play"-Symbol und gelangt zum folgenden Screen:
+Dazu klickt man auf dem Training-Bildschirm auf den großen FloatingActionButton mit dem "Start/Play"-Symbol und gelangt zum folgenden Screen.
 
 ![TrackMyTraining Mobile Training Hinzufügen Default](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Default.PNG)
 
 Man fügt nach und nach die erwünschten Übungen mitsamt Ergebnis hinzu.
-Wenn man fertig mit dem Training ist, beendet man das Training durch Drücken des großen roten "Stop"-Buttons.
+Wenn man fertig mit dem Training ist, beendet man das Training durch Drücken des großen roten "Stop"-Buttons. Dieser Bildschirm dient auch wiederum zum Bearbeiten des Trainings.
 
 ![TrackMyTraining Mobile Training Hinzufügen Gefüllte Liste](./wireframes/mobile/TrackMyTraining%20Neues%20Training%20Liste.PNG)
 
@@ -137,7 +139,7 @@ Die Daten bauen grundsätzlich aufeinander auf:
 Nutzer und Übungen stellen den Grundbaustein der Anwendung dar und sind miteinander verknüpft.
 Ein Training enthält eine Liste von Trainingsübungen. Trainingsübungen sind Übungen mit einem Ergebnis und werden dargestellt durch die Referenz der Übungs-Id und einem Ergebnis.
 
-Die Authentifizierung und Authorizierung möchte ich anhand von JSON Webtokens vornehmen. Ich orientiere mich dabei am Tutorial von medium.com [Securing your node.js RESTFUL Api with JSON Webtokens](https://medium.freecodecamp.org/securing-node-js-restful-apis-with-json-web-tokens-9f811a92bb52) wie man eine Middleware baut um auf allen Routen Authorizierung zu benutzen.
+Authentifizierung nehme ich mit dem Modul [Basic Auth](https://www.npmjs.com/package/basic-auth) vor.
 
 
 
@@ -191,34 +193,33 @@ Alle Routen außer der Login-Route benötigen eine Authentifizierung, welche abe
 
 ### `GET /login`
 **Get**
-Route nimmt Nutzerdaten entgegen und liefert JSON Webtoken zurück, wenn die Daten korrekt sind
-- **INPUT**  `{name: String,password: String}`
-- **RESULT** `{token: String}`
+Route nimmt Nutzerdaten entgegen und liefert einen Login-Token und ein Nutzerobjekt, wenn die Authentifizierung erfolgreich war
+- **INPUT**  `{name: String, password: String}`
+- **RESULT** `{token: String, {name: String, email: String}`
 
-### `POST /register`
+### `POST /user/register`
 **Create** 
 Erstellt einen neuen Nutzer
-Route nimmt Nutzerdaten entgegen und liefert Nutzerobjekt mit id zurück
+Route nimmt Nutzerdaten entgegen
 - **INPUT**  `{name: String, email: String, password: String}`
-- **RESULT** `{id: Number, name: String, email: String, password: String`
 
 ### `GET /user`
 **Get**
-Route nimmt WebToken entgegen und liefert Nutzerobjekt zurück
+Route nimmt Token entgegen und liefert Nutzerobjekt zurück
 - **INPUT** `{token: String}`
-- **RESULT** `{id: Number, name: String, email: String`
+- **RESULT** `{id: Number, name: String, email: String}`
 
 ### `PUT /user/:id`
 **Update**
 Aktualisiert den Nutzer anhand der Route
-Route nimmt Webtoken und aktualisierte Nutzerdaten entgegen und liefert aktualisiertes Nutzerobjekt zurück
+Route nimmt Token und aktualisierte Nutzerdaten entgegen und liefert aktualisiertes Nutzerobjekt zurück
 - **INPUT**  `{token: String, {name_new: String, email_new: String, password_new: String}}`
-- **RESULT** `{id: Number, name_new: String, email_new: String, password_new: String`
+- **RESULT** `{id: Number, name_new: String, email_new: String}`
 
 ### `DELETE /user/:id`
 **Delete** 
 Löscht den Nutzer anhand der Route sowie alle mit ihm verknüpften Datensätze
-Route nimmt Webtoken entgegen
+Route nimmt Token entgegen
 
 ### `GET /übung/:id`
 **Get**
@@ -234,6 +235,11 @@ Route nimmt Webtoken entgegen
 - **INPUT**  `{name: String, beschreibung: String}`
 - **RESULT** `{id: Number, name: String, beschreibung: String}`
 
+### `PUT /übung/:id`
+**Update**
+Route nimmt aktualisierte Übungsdaten und Token entgegen
+- **INPUT** `{token:String, {id: Number, name: String, beschreibung: String}`
+
 ### `DELETE /übung/:id`
 **Delete**
 Löscht die Übung anhand der Route
@@ -244,16 +250,22 @@ Route nimmt Webtoken entgegen
 Erstellt ein neues Training
 liefert Trainingsobjekt zurück
 Route nimmt Webtoken entgegen und speichert Training anhand von mit dem Token assoziierten User
-- **INPUT**  `{token: String, [{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]}`
+- **INPUT**  `{token: String, übungen: [{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]}`
 - **RESULT** `{training_id: Number, übungen: [{übung_id: Number, ergebnis: String},{übung_id : Number, ergebnis: String},...]`
 
-### `GET /übungen`
-**Get List**
-Route nimmt Webtoken entgegen und liefert Liste an Übungen, die vom Nutzer mit dem assoziierten Webtoken erstellt wurden
+### `PUT /training/:id`
+**Update**
+nimmt aktualisierte Trainingsdaten und Token entgegen
+- **INPUT** `{token: String, training: {training_id: Number, übungen: [{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]`
 
-### `GET /training`
+### `GET user/:id/übungen`
 **Get List**
-Route nimmt Webtoken entgegen und liefert Liste an Trainings, die vom Nutzer mit dem assoziierten Webtoken erstellt wurden
+Route nimmt Token entgegen und liefert Liste an Übungen, die vom Nutzer mit id erstellt wurden
+
+
+### `GET user/:id/training`
+**Get List**
+Route nimmt Token entgegen und liefert Liste an Trainings, die vom Nutzer mit id erstellt wurden
 
 ## Data Template Objects
 
@@ -337,57 +349,72 @@ Route nimmt Webtoken entgegen und liefert Liste an Trainings, die vom Nutzer mit
 | Wireframes Desktop erstellt und WorkFlow / Funktionen beschrieben                       |       4    |
 | Backend Endpunkte / API - Beschreibung / Daten   | 5          |
 | ORM                                      |     2       |
-| Verfassen des Projektvorschlags          |      3      |
-| **Summe**                                |  ****    |
+| Verfassen des Projektvorschlags          |      4      |
+| **Summe**                                |  **23,5**    |
 
 ### Client
 #### Implementierung
 
 | Aufgabe                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| HTML-Grundgerüst Allgemein               |             |
-| HTML-Grundgerüst Training                |            |
-| HTML-Grundgerüst Training hinzufügen             |            |
-| HTML-Grundgerüst Übungen              |            |
-| HTML-Grundgerüst Übung hinzufügen              |            |
-| HTML-Grundgerüst Einstellungen             |            |
-| SCSS-Styling Breakpoint small            |            |
-| SCSS-Styling Breakpoint medium           |            |
-| SCSS-Styling Breakpoint large            |            |
-| Implementierung JS Navigation           |            |
-| Implementierung JS Login              |             |
-| Implementierung JS Login - Fehlerbehandlung             |             |
-| Implementierung JS Klassen mit TS            |             |
-| Implementierung JS Init Trainings              |             |
-| Implementierung JS Init Übungen              |             |
-| Implementierung JS Bilder            |             |
-| Implementierung JS Übung hinzufügen           |             |
-| Implementierung JS Training hinzufügen           |             |
-| Implementierung JS Trainings           |             |
-| Implementierung JS Übungen           |             |
-| Implementierung JS Übung löschen           |             |
-| Implementierung JS Übung bearbeiten          |             |
-| ...                                      |  ...        |
-| **Summe**                                |  **...**    |
+| HTML-Grundgerüst Allgemein               |     0,5        |
+| HTML-Grundgerüst Login                   |    1           |
+| HTML-Grundgerüst Registration            |    1         |
+| HTML-Grundgerüst Training                |      2,5      |
+| HTML-Grundgerüst Training hinzufügen / bearbeiten     |    1        |
+| HTML-Grundgerüst Übungen                 |     3,5       |
+| HTML-Grundgerüst Übung hinzufügen / bearbeiten |     1       |
+| HTML-Grundgerüst Einstellungen           |     1       |
+| SCSS-Styling Breakpoint small            |      4      |
+| SCSS-Styling Breakpoint large            |      4      |
+| Implementierung JS Navigation            |       0,5    |
+| Implementierung JS Login                 |    5         |
+| Implementierung JS Registration          |        1     |
+| Implementierung JS Bilder                |       3      |
+| Implementierung JS Übung hinzufügen      |      2       |
+| Implementierung JS Übungen               |       3      |
+| Implementierung JS Übung löschen         |      0,5       |
+| Implementierung JS Übung bearbeiten      |      2       |
+| Implementierung JS Training hinzufügen   |      3       |
+| Implementierung JS Trainings             |     4        |
+| Implementierung JS Training bearbeiten   |    3        |
+| **Summe**                                |  **46,5**    |
 
+Die Grundgerüste Allgemein, Login, Registration, Training hinzufügen / bearbeiten, Übung hinzufügen / bearbeiten sind statische Seiten und müssen nicht dynamisch extra erzeugt werden, weshalb ich denke, dass ich damit sehr schnell voran komme.
+Das Grundgerüst für Training und Übungen hingegen muss dynamisch mit Hilfe von JS generiert werden, weshalb ich beiden Teilen dort einen höheren Wert zuordne. Dies spiegelt sich auch in der JS Implementierung wieder. Die restlichen Schirme müssen ggf. mit passendem Inhalt gefüllt werden, aber es sollte nicht zu schwer sein dies hinzukriegen, während die großen Übersichtsseiten alles anzeigen müssen.
 #### Dokumentation / Tests
 
 | Aufgabe                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| Dokumentation Funktion Lorem             |            |
-| Dokumentation Funktion Lorem2            |            |
-| Dokumentation Funktion Lorem3            |            |
-| ...                                      |  ...        |
-| Vergleich SOLL / IST Stunden             |            |
-| **Summe**                                |  **...**    |
+| Dokumentation Funktion Login             |      0,25      |
+| Dokumentation Funktion Registrieren            |    0,1        |
+| Dokumentation Funktion Übung hinzufügen            |   0,1         |
+| Dokumentation Funktion Übung bearbeiten            |      0,1      |
+| Dokumentation Funktion Übung löschen            |     0,1       |
+| Dokumentation Funktion Training hinzufügen            |    0,1        |
+| Dokumentation Funktion Training bearbeiten            |       0,1     |
+| Dokumentation Funktion Training löschen            |      0,1      |
+| Dokumentation Token / Authenthifizierung / Session-Cookie | 1 |
+| Dokumentation Trainingsliste anzeigen | 0,5 |
+| Dokumentation Übungsliste anzeigen | 0,5 |
+| Test Login | 0,5 |
+| Test Registrierung | 0,5 |
+| Test Übung hinzufügen | 0,25 |
+| Test Übung bearbeiten | 0,25 |
+| Test Übung löschen | 0,25 |
+| Test Training hinzufügen | 0,25 |
+| Test Training löschen | 0,25 |
+| **Summe**                                |  **5,1**    |
 
-#### Zusammenfassung
-| Teil                                     | Zeit in Std |
+Die meisten Funktionen sollten sehr schnell dokumentiert werden können, lediglich die Anzeige der Übersichtsseiten werden ein paar mehr Dokumentationen notwendig machen.
+Beim Testen möchte ich einen Fokus auf den richtigen Login und Registrierung legen.
+
+#### Zusammenfassung Client
+| Teil Client                                    | Zeit in Std |
 |------------------------------------------|------------:|
-| Projektvorbereitung                      |  20        |
-| Implementierung                          |  40        |
-| Dokumentation / Tests                    |  15        |
-| **Summe**                                |  75        |
+| Implementierung                          |  46,5       |
+| Dokumentation / Tests                    |  5,1        |
+| **Summe**                                |    51,6      |
 
 ### Backend
 
@@ -395,49 +422,67 @@ Route nimmt Webtoken entgegen und liefert Liste an Trainings, die vom Nutzer mit
 
 | Aufgabe                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| Setup Framework                          |             |
-| - Framework express                      |         |
-| - Framework jest                         |          |
-| - Framework passport                          |         |
-| DB SQLITE3                                 |            |
-| - Setup                                  |            |
-| Implementierung Auth                     |      ?      |
-| Implementierung Lorem-Route              |            |
-| Implementierung Lorem2-Route             |            |
-| Implementierung Lorem3-Route             |            |
-| Implementierung Lorem4-Route             |            |
-| Implementierung Validierungsschemata     |            |
-| Implementierung Validierung Route 1      |          |
-| Implementierung Validierung Route 2      |          |
-| ...                                      |  ...        |
-| **Summe**                                |  **30**    |
+| Setup Framework                          |      6,5       |
+| - Framework express                      |   1      |
+| - Framework jest                         |    0,5      |
+| - Framework Basic-Auth                          |    1     |
+| - Framework Basic-Auth als Tokenizer     |    4     |
+| DB SQLITE3                                 |     3       |
+| - Setup                                  |      3      |
+| Implementierung get /login-Route                     |     3       |
+| Implementierung post /user/register-Route              |     0,5       |
+| Implementierung get /user/:id/übungen-Route             |       2     |
+| Implementierung get /user/:id/training-Route             |     3       |
+| Implementierung post /übung            |     0,5       |
+| Implementierung post /training         |    1        |
+| Implementierung restliche Routen | 2 |
+| Implementierung Validierungsschemata für Routen    |     5       |
+| **Summe**                                |  **26,5**    |
+
+Das Setup der Frameworks dürfte nicht zu viel Zeit in Anspruch nehmen. Lediglich ein eigenes kleines Tokensystem dürfte ein paar Stunden Arbeit sein.
+Die Datenbank einzurichten bedarf neben Fleißarbeit auch Einiges an Hirnschmalz und Vorsicht, weshalb ich - selbst für die paar kleinen Tabellen, etwas mehr Zeit eingerechnet habe.
+
+Die Funktionalität der einzelnen Routen sollte schnell vonstatten gehen, während die Validierung der Daten jeweils auch nochmal Etwas Zeit in Anspruch nehmen wird.
+Alles in Allem sollte die Implementierung des Server - aus dem Bauch raus - innerhalb einer guten Arbeitswoche von 30-35 Stunden zu schaffen sein. Meine Schätzung der einzelnen Arbeitsschritte bestätigt mich darin.
 
 #### Dokumentation / Tests
 
 | Aufgabe                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| Setup Tests                              |            |
-| Test DB                                  |            |
-| Test Lorem1-Route                        |            |
-| Test Lorem2-Route                        |          |
-| Test Lorem3-Route                       |            |
-| API-Dokumentation Lorem1-Route           |            |
-| API-Dokumentation Lorem2-Route           |            |
-| API-Dokumentation Lorem3-Route           |            |
-| API-Dokumentation Lorem4-Route           |            |
-| Dokumentation Lorem1-Route               |          |
-| Dokumentation Lorem2-Route               |            |
-| Dokumentation Lorem3-Route               |            |
-| Dokumentation Lorem4-Route               |          |
-| ...                                      |  ...        |
-| Vergleich SOLL / IST Stunden             |            |
-| **Summe**                                |  **10**    |
+| Setup Tests                              |      1      |
+| Test DB                                  |      1,5     |
+| Test get /login-Route                     |     1       |
+| Test post /user/register-Route              |     0,5       |
+| Test get /user/:id/übungen-Route             |       0,5     |
+| Test get /user/:id/training-Route             |     0,5      |
+| Test post /übung            |     0,25      |
+| Test post /training         |    0,25       |
+| Test restliche Routen | 0,5 |
+| API-Dokumentation get /login-Route                     |     1       |
+| API-Dokumentation post /user/register-Route              |     0,25       |
+| API-Dokumentation get /user/:id/übungen-Route             |       0,25     |
+| API-Dokumentation get /user/:id/training-Route             |     0,25       |
+| API-Dokumentation post /übung            |     0,25      |
+| API-Dokumentation post /training         |    0,25        |
+| API-Dokumentation restliche Routen | 0,5 |
+| **Summe**                                |  **9**    |
 
 
-#### Zusammenfassung
-| Teil                                     | Zeit in Std |
+
+#### Zusammenfassung Server
+| Teil Server                                  | Zeit in Std |
 |------------------------------------------|------------:|
-| Projektvorbereitung                      |  ...        |
-| Implementierung                          |  ...        |
-| Dokumentation / Tests                    |  ...        |
-| **Summe**                                |  115        |
+| Implementierung                          |  24,5        |
+| Dokumentation / Tests                    |  9        |
+| **Summe**                                |  33,5        |
+
+### Zusammenfassung Gesamt
+| Teil Gesamt                                 | Zeit in Std |
+|------------------------------------------|------------:|
+| Projektvorbereitung                      |  23,5       |
+| Client                        |  51,6        |
+| Server                   |     35,5    |
+| **Summe**                                |  110,6        |
+
+Als Einzelprojekt ist es meines Erachtens angemessen, dass ich Etwas über die angepeilten 100 Stunden hinaus komme.
+Ich denke jedoch, dass ich durch auftretende Probleme länger brauchen könnte als geschätzt. Ich plane final mit <130 Stunden für das Projekt.
