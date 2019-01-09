@@ -137,7 +137,9 @@ Die Daten bauen grundsätzlich aufeinander auf:
 Nutzer und Übungen stellen den Grundbaustein der Anwendung dar und sind miteinander verknüpft.
 Ein Training enthält eine Liste von Trainingsübungen. Trainingsübungen sind Übungen mit einem Ergebnis und werden dargestellt durch die Referenz der Übungs-Id und einem Ergebnis.
 
-Zur Authentifizerung möchte ich [Passport.js](http://www.passportjs.org/) mit lokaler Strategy nutzen inklusive Sessions, d.h. eine Anmeldung findet mittels Nutzername und Passwort statt und es wird ein Session Cookie erstellt, der mich die Authentifizierung für Anfragen checken lässt.
+Die Authentifizierung und Authorizierung möchte ich anhand von JSON Webtokens vornehmen. Ich orientiere mich dabei am Tutorial von medium.com [Securing your node.js RESTFUL Api with JSON Webtokens](https://medium.freecodecamp.org/securing-node-js-restful-apis-with-json-web-tokens-9f811a92bb52) wie man eine Middleware baut um auf allen Routen Authorizierung zu benutzen.
+
+
 
 ## ORM
 ![TrackMyTraining UML Diagramm](./orm/TrackMyTraining%20UML.PNG)
@@ -189,58 +191,69 @@ Alle Routen außer der Login-Route benötigen eine Authentifizierung, welche abe
 
 ### `GET /login`
 **Get**
-Route nimmt Nutzerdaten entgegen und liefert Nutzerobjekt zurück, wenn die Daten korrekt sind
+Route nimmt Nutzerdaten entgegen und liefert JSON Webtoken zurück, wenn die Daten korrekt sind
 - **INPUT**  `{name: String,password: String}`
-- **RESULT** `{id: Number, name: String, email: String, password: String}` + Session Cookie?!
+- **RESULT** `{token: String}`
 
-### `POST /users`
+### `POST /register`
 **Create** 
 Erstellt einen neuen Nutzer
 Route nimmt Nutzerdaten entgegen und liefert Nutzerobjekt mit id zurück
 - **INPUT**  `{name: String, email: String, password: String}`
 - **RESULT** `{id: Number, name: String, email: String, password: String`
 
-### `PUT /users/:id`
+### `GET /user`
+**Get**
+Route nimmt WebToken entgegen und liefert Nutzerobjekt zurück
+- **INPUT** `{token: String}`
+- **RESULT** `{id: Number, name: String, email: String`
+
+### `PUT /user/:id`
 **Update**
 Aktualisiert den Nutzer anhand der Route
-Route nimmt aktualisiertes Nutzerobjekt entgegen und liefert aktualisiertes Nutzerobjekt zurück
-- **INPUT**  `{id: Number, name_new: String, email_new: String, password_new: String}`
+Route nimmt Webtoken und aktualisierte Nutzerdaten entgegen und liefert aktualisiertes Nutzerobjekt zurück
+- **INPUT**  `{token: String, {name_new: String, email_new: String, password_new: String}}`
 - **RESULT** `{id: Number, name_new: String, email_new: String, password_new: String`
 
-### `DELETE /users/:id`
+### `DELETE /user/:id`
 **Delete** 
 Löscht den Nutzer anhand der Route sowie alle mit ihm verknüpften Datensätze
+Route nimmt Webtoken entgegen
 
-### `GET /übungen/:id`
+### `GET /übung/:id`
 **Get**
 liefert Übungsobjekt anhand der Route zurück
+Route nimmt Webtoken entgegen
 - **RESULT** `{id: Number, name: String, beschreibung: String}`
 
-### `POST /übungen`
+### `POST /übung`
 **Create** 
 Erstellt eine neue Übung.
 Route nimmt Übungsdaten entgegen und liefert Übungsobjekt mit id zurück
+Route nimmt Webtoken entgegen
 - **INPUT**  `{name: String, beschreibung: String}`
 - **RESULT** `{id: Number, name: String, beschreibung: String}`
 
-### `DELETE /übungen/:id`
+### `DELETE /übung/:id`
 **Delete**
 Löscht die Übung anhand der Route
+Route nimmt Webtoken entgegen
 
 ### `POST /training`
 **Create**
 Erstellt ein neues Training
 liefert Trainingsobjekt zurück
-- **INPUT**  `{[{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]}`
+Route nimmt Webtoken entgegen und speichert Training anhand von mit dem Token assoziierten User
+- **INPUT**  `{token: String, [{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]}`
 - **RESULT** `{training_id: Number, übungen: [{übung_id: Number, ergebnis: String},{übung_id : Number, ergebnis: String},...]`
 
-### `GET /übungen?user_id=x`
+### `GET /übungen`
 **Get List**
-liefert Liste an Übungen, die vom Nutzer mit der id x erstellt wurden
+Route nimmt Webtoken entgegen und liefert Liste an Übungen, die vom Nutzer mit dem assoziierten Webtoken erstellt wurden
 
-### `GET /training?user_id=x`
+### `GET /training`
 **Get List**
-liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
+Route nimmt Webtoken entgegen und liefert Liste an Trainings, die vom Nutzer mit dem assoziierten Webtoken erstellt wurden
 
 ## Data Template Objects
 
@@ -322,7 +335,7 @@ liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
 | Design inklusive Recherche auf Material.io                     |    1        |
 | WireFrames Mobile erstellt und WorkFlow / Funktionen beschrieben         |     5       |
 | Wireframes Desktop erstellt und WorkFlow / Funktionen beschrieben                       |       4    |
-| Backend Endpunkte / API - Beschreibung / Daten   | 4          |
+| Backend Endpunkte / API - Beschreibung / Daten   | 5          |
 | ORM                                      |     2       |
 | Verfassen des Projektvorschlags          |      3      |
 | **Summe**                                |  ****    |
@@ -372,8 +385,8 @@ liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
 | Teil                                     | Zeit in Std |
 |------------------------------------------|------------:|
 | Projektvorbereitung                      |  20        |
-| Implementierung                          |  ...        |
-| Dokumentation / Tests                    |  ...        |
+| Implementierung                          |  40        |
+| Dokumentation / Tests                    |  15        |
 | **Summe**                                |  75        |
 
 ### Backend
@@ -407,7 +420,7 @@ liefert Liste an Trainings, die vom Nutzer mit der id x erstellt wurden
 | Test DB                                  |            |
 | Test Lorem1-Route                        |            |
 | Test Lorem2-Route                        |          |
-| Test Lorem3-Route                        |            |
+| Test Lorem3-Route                       |            |
 | API-Dokumentation Lorem1-Route           |            |
 | API-Dokumentation Lorem2-Route           |            |
 | API-Dokumentation Lorem3-Route           |            |
