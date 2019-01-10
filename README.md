@@ -4,7 +4,12 @@
 
 Philipp Schmitt
 
+Gruppe 36 ( Soloprojekt )
+
+Matrikelnummer 674617
+
 Philipp.Schmitt@hs-worms.de
+inf3182@hs-worms.de
 
 
 ---
@@ -21,8 +26,8 @@ Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsp
 ### Anforderungsanalyse
 
 1. Funktionale Anforderungen
-    - User registrieren
-    - User Einloggen
+    - User registrieren.
+    - User einloggen.
     - Übung hinzufügen.
     - Übung bearbeiten.
     - Übung löschen.
@@ -30,6 +35,7 @@ Dies möchte ich für mich (und für andere Nutzer) lösen, indem ich eine entsp
     - Übung zum Training hinzufügen.
     - Ergebnis zu einer Übung hinzufügen.
     - Ergebnis zu einer Übung bearbeiten.
+    - Ergebnis zu einer Übung löschen.
     - Training bearbeiten.
     - Training löschen.
     
@@ -139,8 +145,7 @@ Die Daten bauen grundsätzlich aufeinander auf:
 Nutzer und Übungen stellen den Grundbaustein der Anwendung dar und sind miteinander verknüpft.
 Ein Training enthält eine Liste von Trainingsübungen. Trainingsübungen sind Übungen mit einem Ergebnis und werden dargestellt durch die Referenz der Übungs-Id und einem Ergebnis.
 
-Authentifizierung nehme ich mit dem Modul [Basic Auth](https://www.npmjs.com/package/basic-auth) vor.
-
+Authentifizierung nehme ich mit dem Modul [Basic Auth](https://www.npmjs.com/package/basic-auth) vor. Ich behalte mir vor etwaige Verschlüsselung mit einzubauen. Des Weiteren möchte ich mich daran versuchen ein Mini-Token-System mittels dem Basic-Auth zu schreiben.
 
 
 ## ORM
@@ -221,6 +226,11 @@ Route nimmt Token und aktualisierte Nutzerdaten entgegen und liefert aktualisier
 Löscht den Nutzer anhand der Route sowie alle mit ihm verknüpften Datensätze
 Route nimmt Token entgegen
 
+### `GET /users`
+**DEBUG**
+**Get List**
+Liefert Liste aller User zum Debuggen
+
 ### `GET /übung/:id`
 **Get**
 liefert Übungsobjekt anhand der Route zurück
@@ -245,6 +255,11 @@ Route nimmt aktualisierte Übungsdaten und Token entgegen
 Löscht die Übung anhand der Route
 Route nimmt Webtoken entgegen
 
+### `GET /übungen`
+**DEBUG**
+**Get List**
+Liefert Liste aller Übungen zum Debuggen
+
 ### `POST /training`
 **Create**
 Erstellt ein neues Training
@@ -257,6 +272,11 @@ Route nimmt Webtoken entgegen und speichert Training anhand von mit dem Token as
 **Update**
 nimmt aktualisierte Trainingsdaten und Token entgegen
 - **INPUT** `{token: String, training: {training_id: Number, übungen: [{übung_id: Number, ergebnis: String},{übung_id: Number, ergebnis: String},...]`
+
+### `GET /trainings`
+**DEBUG**
+**Get List**
+Liefert Liste aller Trainings zum Debuggen
 
 ### `GET user/:id/übungen`
 **Get List**
@@ -380,8 +400,8 @@ Route nimmt Token entgegen und liefert Liste an Trainings, die vom Nutzer mit id
 | Implementierung JS Training bearbeiten   |    3        |
 | **Summe**                                |  **46,5**    |
 
-Die Grundgerüste Allgemein, Login, Registration, Training hinzufügen / bearbeiten, Übung hinzufügen / bearbeiten sind statische Seiten und müssen nicht dynamisch extra erzeugt werden, weshalb ich denke, dass ich damit sehr schnell voran komme.
-Das Grundgerüst für Training und Übungen hingegen muss dynamisch mit Hilfe von JS generiert werden, weshalb ich beiden Teilen dort einen höheren Wert zuordne. Dies spiegelt sich auch in der JS Implementierung wieder. Die restlichen Schirme müssen ggf. mit passendem Inhalt gefüllt werden, aber es sollte nicht zu schwer sein dies hinzukriegen, während die großen Übersichtsseiten alles anzeigen müssen.
+Die Grundgerüste Allgemein, Login, Registration, Training hinzufügen / bearbeiten, Übung hinzufügen / bearbeiten sind statische Seiten und müssen nicht dynamisch erzeugt werden, weshalb ich denke, dass ich damit sehr schnell voran komme.
+Das Grundgerüst für Training und Übungen hingegen muss dynamisch mit Hilfe von JS generiert werden, weshalb ich beiden Teilen einen höheren Zeitaufwand anrechne. Dies spiegelt sich auch in der JS Implementierung wieder. Die restlichen Bildschirme müssen ggf. mit passendem Inhalt gefüllt werden.
 #### Dokumentation / Tests
 
 | Aufgabe                                  | Zeit in Std |
@@ -440,9 +460,9 @@ Beim Testen möchte ich einen Fokus auf den richtigen Login und Registrierung le
 | **Summe**                                |  **26,5**    |
 
 Das Setup der Frameworks dürfte nicht zu viel Zeit in Anspruch nehmen. Lediglich ein eigenes kleines Tokensystem dürfte ein paar Stunden Arbeit sein.
-Die Datenbank einzurichten bedarf neben Fleißarbeit auch Einiges an Hirnschmalz und Vorsicht, weshalb ich - selbst für die paar kleinen Tabellen, etwas mehr Zeit eingerechnet habe.
+Die Datenbank einzurichten bedarf neben Fleißarbeit auch Einiges an Hirnschmalz und Vorsicht, weshalb ich - selbst für die paar kleinen Tabellen - etwas mehr Zeit eingerechnet habe.
 
-Die Funktionalität der einzelnen Routen sollte schnell vonstatten gehen, während die Validierung der Daten jeweils auch nochmal Etwas Zeit in Anspruch nehmen wird.
+Die Funktionalität der einzelnen Routen sollte schnell vonstatten gehen, während die Validierung der Daten jeweils auch nochmal gut Zeit in Anspruch nehmen wird.
 Alles in Allem sollte die Implementierung des Server - aus dem Bauch raus - innerhalb einer guten Arbeitswoche von 30-35 Stunden zu schaffen sein. Meine Schätzung der einzelnen Arbeitsschritte bestätigt mich darin.
 
 #### Dokumentation / Tests
